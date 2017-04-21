@@ -1,0 +1,34 @@
+CREATE TABLE ethereum_atranction (
+`transactionArr`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`address`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`blockid`  int(11) NULL DEFAULT NULL 
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+CHECKSUM=0
+ROW_FORMAT=DYNAMIC
+DELAY_KEY_WRITE=0
+;
+
+
+CREATE TABLE ethereum_address (
+`addressid`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+PRIMARY KEY (`addressid`)
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+CHECKSUM=0
+ROW_FORMAT=DYNAMIC
+DELAY_KEY_WRITE=0
+;
+
+CREATE TABLE ethereum_blockNumber (
+`blocknumber`  int(11) NULL DEFAULT NULL 
+)
+ENGINE=MyISAM
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+CHECKSUM=0
+ROW_FORMAT=FIXED
+DELAY_KEY_WRITE=0
+;
+

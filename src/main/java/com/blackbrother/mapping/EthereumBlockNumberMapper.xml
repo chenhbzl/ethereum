@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blackbrother.dao.EthereumBlockNumberMapper" >
+  <resultMap id="BaseResultMap" type="com.blackbrother.model.EthereumBlockNumber" >
+    <result column="blocknumber" property="blocknumber" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.blackbrother.model.EthereumBlockNumber" >
+    insert into ethereum_blockNumber (blocknumber)
+    values (#{blocknumber,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.blackbrother.model.EthereumBlockNumber" >
+    insert into ethereum_blockNumber
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="blocknumber != null" >
+        blocknumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="blocknumber != null" >
+        #{blocknumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="getBlockNumber" resultType="java.lang.Integer">
+   		select * from ethereum_blockNumber
+   </select>
+   <!-- 更新区块数量 -->
+   <update id="updateBlockNumber" parameterType="java.lang.Integer">
+   		update ethereum_blockNumber set blocknumber=#{number}
+   </update>
+</mapper>

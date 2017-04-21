@@ -1,0 +1,40 @@
+<div>
+    <h1 style="text-align:center;">Welcome to the Etherparty Block Explorer!</h1>
+
+    <h4 style="text-align:center; margin-top: 30px;">
+      <a href="index.html#/block/{{blockNum}}">Latest Block: {{blockNum}}</a>
+    </h4>
+     <h2 style="margin-top: 30px;">
+        AllTransactions
+    </h2>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th align="left">Address <span class="pull-right"></span></th>
+                    <th align="left">Transactions<span class="pull-right"></span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tx in transactions">
+                    <td><a href="./index.html#/address/{{tx.address}}">{{tx.address}}</a></td>
+                    <td>
+                        <ul>
+                            <li ng-click="toggleMenu($index)" style="list-style:none;" ng-class="{'index':$index==temp}">
+                                Click to view the account under the transaction information
+                            </li>
+                            <div class="closediv opendiv div{{$index}}" style="display: none;">
+                                <ul>
+                                    <li ng-repeat="x in tx.transactionList" style="list-style: none;">
+                                        <a class="hash-link" href="./index.html#/transaction/{{x}}">{{x}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr>
+        </div>
+</div>

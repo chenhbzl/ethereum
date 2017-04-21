@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blackbrother.dao.EthereumAddressMapper" >
+  <resultMap id="BaseResultMap" type="com.blackbrother.model.EthereumAddress" >
+    <id column="addressid" property="addressid" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ethereum_address
+    where addressid = #{addressid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.blackbrother.model.EthereumAddress" >
+    insert into ethereum_address (addressid)
+    values (#{addressid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.blackbrother.model.EthereumAddress" >
+    insert into ethereum_address
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="addressid != null" >
+        addressid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="addressid != null" >
+        #{addressid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addAddress" parameterType="java.lang.String"> 
+    	insert into ethereum_address values(#{addressid})
+  </insert>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blackbrother.dao.EthereumAtranctionMapper" >
+  <resultMap id="BaseResultMap" type="com.blackbrother.model.EthereumAtranction" >
+    <result column="transactionArr" property="transactionarr" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="blockid" property="blockid" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.blackbrother.model.EthereumAtranction" >
+    insert into ethereum_atranction (transactionArr, address, blockid
+      )
+    values (#{transactionarr,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{blockid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.blackbrother.model.EthereumAtranction" >
+    insert into ethereum_atranction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="transactionarr != null" >
+        transactionArr,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="blockid != null" >
+        blockid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="transactionarr != null" >
+        #{transactionarr,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="blockid != null" >
+        #{blockid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="getTransactions" resultMap="BaseResultMap" parameterType="java.util.Map">
+	select * from ethereum_atranction
+  </select>
+  
+  <insert id="addTransactionCount" parameterType="com.blackbrother.model.EthereumAtranction"> 
+   	insert into ethereum_atranction(blockid,address,transactionArr) values(#{blockId},#{address},#{transactionArr})
+   </insert>
+   
+   <select id="getTransactionCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+   		select count(*) from ETHEREUM_ATRANCTION where transactionArr=#{transactionArr}
+   </select>
+</mapper>
