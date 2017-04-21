@@ -43,10 +43,10 @@
   </select>
   
   <insert id="addTransactionCount" parameterType="com.blackbrother.model.EthereumAtranction"> 
-   	insert into ethereum_atranction(blockid,address,transactionArr) values(#{blockId},#{address},#{transactionArr})
+   	insert into ethereum_atranction(blockid,address,transactionarr) values(#{blockid},#{address},#{transactionarr})
    </insert>
    
    <select id="getTransactionCount" resultType="java.lang.Integer" parameterType="java.lang.String">
-   		select count(*) from ETHEREUM_ATRANCTION where transactionArr=#{transactionArr}
+   		select count(*) from ethereum_atranction where transactionArr=#{transactionArr}
    </select>
 </mapper>

@@ -28,4 +28,7 @@
   <insert id="addAddress" parameterType="java.lang.String"> 
     	insert into ethereum_address values(#{addressid})
   </insert>
+  <select id="getAllAddress" resultType="java.lang.Integer" parameterType="java.lang.String">
+  		select count(0) from ethereum_address where addressid = #{addressid}
+  </select>
 </mapper>

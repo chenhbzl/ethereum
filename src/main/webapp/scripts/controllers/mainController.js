@@ -86,15 +86,15 @@ angular.module('ethExplorer')
                 });
         }, 1200000000000);
         //添加address
-//        datainit(1);
+        datainit(2411);
         function  datainit(blockstart){
             var data=new Array();
             var transactions=new Array();
             var blockend=web3.eth.blockNumber;
             console.log("-----"+blockstart+"========"+blockend);
-            for(var i=blockstart;i<blockend;i++){
+            for(var i=blockstart+1;i<=blockend;i++){
                 var blockinfo= web3.eth.getBlock(i);
-                //console.log(i+"----"+blockinfo.miner);
+                console.log(i+"----"+blockinfo.miner);
                 // accountinit(blockinfo.miner);
                 var  block={
                     blockId:blockinfo.number,
@@ -104,6 +104,7 @@ angular.module('ethExplorer')
                 data.push(blockinfo.miner);
                 if(block.transactionArr.length>0){
                     console.log("transactionArr="+block.transactionArr);
+                    console.log("blockId="+block.blockId);
                     transactions.push(block);
                 }
             }
@@ -132,40 +133,37 @@ angular.module('ethExplorer')
             if(address_data.length>0){
                 var transactionsstr="";
                 var url="";
-                if(transactions.length>0 && transactions.length>12){
-                    var n=transactions.length/12;
-                    var m=transactions.length%12;
-                   // console.log(n+"==="+m);
-                    var h=1;
-                            for(var i=0;i<n;i++){
-                                var transactionsstr01=JSON.stringify(transactions.slice(12*i,12*(i+1)));
-                                var uri='http://127.0.0.1:8080/etf/addTransaction?transactionsstr='+transactionsstr01;
-                                $http.post(uri).success(function(){
-                                    console.log("transactionsstr保存成功===整除");
-                                })
-                            }
-                    if(m>0){
-                        var transactionsstr02=JSON.stringify(transactions.slice(12*n,transactions.length));
-                        var uri='http://127.0.0.1:8080/etf/addTransaction?transactionsstr='+transactionsstr02;
-                        $http.post(uri).success(function(){
-                            console.log("transactionsstr保存成功==除余");
-                        })
-                    }
-                }else if(transactions.length>0 && transactions.length<12){
-                        transactionsstr=JSON.stringify(transactions);
-                         var url='http://127.0.0.1:8080/etf/addAddress?address_data='+address_data+'&blockend='+blockend+'&transactionsstr='+transactionsstr;
-                        $http.post(url).success(function(){
-                            console.log("address保存成功");
-                        }).error(function(data) {
-                            console.log("address保存失败");
-                        });
-                    }
-                        var  url='http://127.0.0.1:8080/etf/addAddress?address_data='+address_data+'&blockend='+blockend;
-                        $http.post(url).success(function(){
-                            console.log("address保存成功");
-                        }).error(function(data) {
-                            console.log("address保存失败");
-                        });
+                console.log("transactions.length+="+transactions.length);
+                if(transactions.length>0){
+                    var transactionsstr01=JSON.stringify(transactions);
+                    console.log("transactionsstr01="+transactionsstr01);
+                    var uri='http://127.0.0.1:8080/etf/addTransactionCount';
+//                    $http.post(uri,{"transactionsstr":transactions}).success(function(){
+//                        console.log("transactionsstr保存成功===整除");
+//                    });
+                    
+                    var post={transactionsstr:JSON.stringify(transactions)};//JSON.stringify(json)把json转化成字符串
+                    $.post(uri,post).success(function(){
+                      console.log("transactionsstr保存成功===整除");
+                    });
+                    
+//                    $.ajax({  
+//				        type:"post",  
+//				        url:"http://127.0.0.1:8080/etf/addTransactionCount",  
+//				        data:transactionsstr01,
+//				        dataType:"json",  
+//				        success: function(data) {  
+//				        	console.log("transactionsstr保存成功===整除"+data.result);
+//				        }  
+//				    }); 
+                    
+                    var  url='http://127.0.0.1:8080/etf/addAddress?address_data='+address_data+'&blockend='+blockend;
+                    $http.post(url).success(function(){
+                        console.log("address保存成功");
+                    }).error(function(data) {
+                        console.log("address保存失败");
+                    });
+                }
             }
         }
     });

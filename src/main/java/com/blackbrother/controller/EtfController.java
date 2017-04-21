@@ -70,7 +70,7 @@ public class EtfController {
 
 	@RequestMapping(value = "etf/addTransactionCount", method = RequestMethod.POST)
 	@ResponseBody
-	public void addTransactionCount(HttpServletRequest request) {
+	public Map<String, String> addTransactionCount(HttpServletRequest request) {
 		String jsonobj = request.getParameter("transactionsstr");
 		System.out.println("addTransaction=====" + jsonobj);
 		JSONArray jsonArr = JSONArray.fromObject(jsonobj);
@@ -85,6 +85,9 @@ public class EtfController {
 				ethereumServe.addTransactionCount(ethereum);
 			}
 		}
+		Map<String, String> map = new HashMap<>();
+		map.put("result", "success");
+		return map;
 	}
 
 	@RequestMapping(value = "etf/addAddress", method = RequestMethod.POST)
@@ -116,7 +119,10 @@ public class EtfController {
 	private void savefile(String[] json) {
 		for (int i = 0; i < json.length; i++) {
 			String addressid = json[i];
-			ethereumServe.addAddress(addressid);
+			int count = ethereumServe.getAllAddress(addressid);
+			if(count==0){
+				ethereumServe.addAddress(addressid);
+			}
 		}
 	}
 }

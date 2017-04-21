@@ -16,4 +16,6 @@ public interface EthereumServe {
 	int getTransactionCount(String transactionArr);
 	
 	void addAddress(String addressid);
+	
+	int getAllAddress(String addressid);
 }

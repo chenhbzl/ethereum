@@ -10,4 +10,6 @@ public interface EthereumAddressMapper {
     int insertSelective(EthereumAddress record);
     
     void addAddress(String addressid);
+    
+    int getAllAddress(String addressid);
 }

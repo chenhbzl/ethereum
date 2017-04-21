@@ -48,4 +48,9 @@ public class EthereumServeImpl implements EthereumServe {
 	public void addAddress(String addressid) {
 		ethereumAddressMapper.addAddress(addressid);
 	}
+
+	@Override
+	public int getAllAddress(String addressid) {
+		return ethereumAddressMapper.getAllAddress(addressid);
+	}
 }
