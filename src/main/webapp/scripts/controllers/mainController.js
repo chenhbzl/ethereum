@@ -84,7 +84,7 @@ angular.module('ethExplorer')
                     console.log(data);
                     console.log("获取区块数据请求失败");
                 });
-        }, 1200000000000);
+        }, 120000);
         //添加address
         datainit(2411);
         function  datainit(blockstart){
@@ -138,24 +138,11 @@ angular.module('ethExplorer')
                     var transactionsstr01=JSON.stringify(transactions);
                     console.log("transactionsstr01="+transactionsstr01);
                     var uri='http://127.0.0.1:8080/etf/addTransactionCount';
-//                    $http.post(uri,{"transactionsstr":transactions}).success(function(){
-//                        console.log("transactionsstr保存成功===整除");
-//                    });
-                    
                     var post={transactionsstr:JSON.stringify(transactions)};//JSON.stringify(json)把json转化成字符串
                     $.post(uri,post).success(function(){
                       console.log("transactionsstr保存成功===整除");
                     });
                     
-//                    $.ajax({  
-//				        type:"post",  
-//				        url:"http://127.0.0.1:8080/etf/addTransactionCount",  
-//				        data:transactionsstr01,
-//				        dataType:"json",  
-//				        success: function(data) {  
-//				        	console.log("transactionsstr保存成功===整除"+data.result);
-//				        }  
-//				    }); 
                     
                     var  url='http://127.0.0.1:8080/etf/addAddress?address_data='+address_data+'&blockend='+blockend;
                     $http.post(url).success(function(){
