@@ -22,7 +22,8 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
                 controller: 'addressInfosCtrl'
             }).
             when('/sign', {
-                templateUrl: 'views/sign.html'
+                templateUrl: 'views/sign.html',
+                controller: 'signCtrl'
             }).
             otherwise({
                 redirectTo: '/'
