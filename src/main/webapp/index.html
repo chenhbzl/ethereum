@@ -28,22 +28,27 @@
 <div class="container" style="margin-top:70px"> 
 	<div class="row">
 		<ul class="nav nav-pills nav-stacked col-lg-2">
-		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/">Home</a></li>
-		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/aa">Profile</a></li>
+		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/">区块查询</a></li>
+		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/sign">圆曲线加密</a></li>
 		  <li role="presentation" ui-sref-active="active"><a href="#">Messages</a></li>
 		</ul>
-		<div class="col-lg-10" ng-view></div>
+		<div class="col-lg-10" ng-view ng-route></div>
 	</div>
 </div>
-<script src="angular.min.js"></script>
-<script src="angular-route.js"></script>
-<script src="ui-bootstrap.min.js"></script>
-<script src="app.js"></script>
-<script src="jquery.min.js"></script>
-<script src="scripts/controllers/mainController.js"></script>
-<script src="scripts/controllers/addressInfosController.js"></script>
-<script src="scripts/controllers/blockInfosController.js"></script>
-<script src="scripts/controllers/transactionInfosController.js"></script>
+<script type="text/javascript" src="scripts/angular.min.js"></script>
+<script type="text/javascript" src="scripts/angular-route.js"></script>
+<script type="text/javascript" src="scripts/ui-bootstrap.min.js"></script>
+<script type="text/javascript" src="scripts/app.js"></script>
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
+<script type="text/javascript" src="scripts/controllers/mainController.js"></script>
+<script type="text/javascript" src="scripts/controllers/addressInfosController.js"></script>
+<script type="text/javascript" src="scripts/controllers/blockInfosController.js"></script>
+<script type="text/javascript" src="scripts/controllers/transactionInfosController.js"></script>
+
+<script type="text/javascript" src="scripts/truffle-contract.min.js"></script>
+<script type="text/javascript" src="scripts/lightwallet.min.js"></script>  
+<script type="text/javascript" src="scripts/hooked-web3-provider.min.js"></script>  
+<script type="text/javascript" src="scripts/sign.js"></script>
 
 <!--Services-->
 <div id="connectwarning" class="modal fade" role="dialog">
@@ -74,7 +79,8 @@
 $("#modaltext").text( 'geth --rpc --rpccorsdomain "'+ window.location.protocol + '//' +"10.132.97.27:8545" + '"' );
 var Web3 = require('web3');
 var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider('http://192.168.9.147:8545'));
+var provider = new web3.providers.HttpProvider('http://192.168.9.147:8545'); //�����Լ���ip�޸�
+web3.setProvider(provider);
 var number=web3.eth.blockNumber;
 console.log(number);
 </script>
