@@ -30,7 +30,7 @@
 		<ul class="nav nav-pills nav-stacked col-lg-2">
 		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/">区块查询</a></li>
 		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/sign">圆曲线加密</a></li>
-		  <li role="presentation" ui-sref-active="active"><a href="#">Messages</a></li>
+		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/conference">智能合约(参会购票)</a></li>
 		</ul>
 		<div class="col-lg-10" ng-view ng-route></div>
 	</div>
@@ -40,15 +40,17 @@
 <script type="text/javascript" src="scripts/ui-bootstrap.min.js"></script>
 <script type="text/javascript" src="scripts/app.js"></script>
 <script type="text/javascript" src="scripts/jquery.min.js"></script>
+
 <script type="text/javascript" src="scripts/controllers/mainController.js"></script>
 <script type="text/javascript" src="scripts/controllers/addressInfosController.js"></script>
 <script type="text/javascript" src="scripts/controllers/blockInfosController.js"></script>
 <script type="text/javascript" src="scripts/controllers/transactionInfosController.js"></script>
+<script type="text/javascript" src="scripts/controllers/sign.js"></script>
+<script type="text/javascript" src="scripts/controllers/conference.js"></script>
 
 <script type="text/javascript" src="scripts/truffle-contract.min.js"></script>
 <script type="text/javascript" src="scripts/lightwallet.min.js"></script>  
 <script type="text/javascript" src="scripts/hooked-web3-provider.min.js"></script>  
-<script type="text/javascript" src="scripts/controllers/sign.js"></script>
 
 <!--Services-->
 <div id="connectwarning" class="modal fade" role="dialog">

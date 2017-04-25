@@ -25,6 +25,10 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
                 templateUrl: 'views/sign.html',
                 controller: 'signCtrl'
             }).
+            when('/conference', {
+                templateUrl: 'views/conference.html',
+                controller: 'conferenceCtrl'
+            }).
             otherwise({
                 redirectTo: '/'
             });
