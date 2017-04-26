@@ -31,16 +31,12 @@ angular.module('ethExplorer')
         $scope.init();
         
         function initializeDecode(){
-          	Decode.new({from:web3.eth.accounts[0],gas:3141592}).then(
-          	  function(conf){
-          	    	decode = conf;
-          	    	$("#confAddress").html(decode.address);
-          	    	console.log(decode);
-          	  }
-          	)
-//          	console.log(web3.eth);
-//        	decode = web3.eth.contract(Decode.abi).at('0x1a8667f3d04862d58e618966b843c6cdadd56d88');
-//          	console.log(decode);
+        	var contract_address="0xbbcd44a1ab61c4e2bdcc34e2cfc08ad1337b3931";//合约地址
+        	Decode.at(contract_address).then(function(instance) {
+        		decode = instance;
+        		$("#confAddress").html(decode.address);
+ 	    	    console.log(decode);
+        	})
         };
         
         

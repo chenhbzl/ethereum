@@ -144,13 +144,12 @@ angular.module('ethExplorer')
         
         //初始化
         function initializeConference(){
-          	Conference.new({from:account,gas:3141592}).then(
-          	  function(conf){
-          	    	myConferenceInstance = conf;
-          	    	$("#confAddress").html(myConferenceInstance.address);//部署成功后，智能合约在区块链的地址
-          	    	checkValues();
-          	  }
-          	)
+        	var contract_address="0x17b3bc32942907ec1035218b31929cc21bf5577d";//合约地址
+        	Conference.at(contract_address).then(function(instance) {
+        		myConferenceInstance = instance;
+        		$("#confAddress").html(myConferenceInstance.address);//部署成功后，智能合约在区块链的地址
+     	    	checkValues();
+        	})
         };
         //检查初始化的数据
         function checkValues(){
