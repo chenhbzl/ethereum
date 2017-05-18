@@ -7,7 +7,7 @@ angular.module('ethExplorer')
         $scope.init=function(){
 
         	account = web3.eth.accounts[0]; 
-        	sha3Msg = web3.sha3("\x19Ethereum Signed Message:\n" + 3 + "abc"); 
+        	sha3Msg = web3.sha3("abc"); 
         	//sha3Msg = keccak256("\x19Ethereum Signed Message:\n" + len("abc") + "abc");
         	signedData = web3.eth.sign(account,sha3Msg); 
         	
