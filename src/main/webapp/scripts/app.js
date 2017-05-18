@@ -33,6 +33,10 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
                 templateUrl: 'views/smartsponsor.html',
                 controller: 'smartsponsorCtrl'
             }).
+            when('/accountmanagement', {
+                templateUrl: 'views/accountmanagement.html',
+                controller: 'accountmanagementCtrl'
+            }).
             otherwise({
                 redirectTo: '/'
             });

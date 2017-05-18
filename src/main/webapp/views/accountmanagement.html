@@ -1,0 +1,43 @@
+<div>
+    <h1 style="text-align:center;">账户管理</h1>
+
+     <h2 style="margin-top: 30px;">
+            所有账号
+    </h2>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th align="left">账户 <span class="pull-right"></span></th>
+                    <th align="left" width="400px">操作<span class="pull-right"></span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="account in accounts">
+                    <td>{{account.address}}</td>
+                    <td>
+                        <ul>
+                            <li ng-click="toggleMenu($index)" style="list-style:none;color:#337ab7" ng-class="{'index':$index==temp}">
+                                                                         解锁
+                            </li>
+                            <div class="closediv opendiv div{{$index}}" style="display: none;">
+                                <ul>
+									 输入密码：<input type="text" id="password" /><input type="hidden" id="address" value="{{account.address}}"/>
+									 <button ng-click="unlockAccount()">unlockAccount</button>
+									 <span id="unlockAccountResult"></span>
+                                </ul>
+                            </div>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr>
+        </div>
+		<div class="section">
+		    <h2>添加账户</h2>
+		               密码: <input type="text" id="newPassword"/> 
+		      <button ng-click="newAccount()">newAccount</button>
+		      <span id="newAccountResult"></span>
+		</div>
+</div>
