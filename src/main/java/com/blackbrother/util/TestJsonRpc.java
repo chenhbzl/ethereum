@@ -22,7 +22,7 @@ public class TestJsonRpc {
         Object[] params = new Object[]{"123456"};
         String methodName = "personal_newAccount";
         try {
-            JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://192.168.9.147:8545"));
+            JsonRpcHttpClient client = new JsonRpcHttpClient(new URL("http://192.168.9.44:8545"));
 //            Object newAddress = client.invoke(methodName, params, Object.class);
 //            System.out.println(newAddress);
             

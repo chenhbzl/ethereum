@@ -133,12 +133,13 @@ angular.module('ethExplorer')
             if(address_data.length>0){
                 var transactionsstr="";
                 var url="";
-                console.log("transactions.length+="+transactions.length);
+                console.log("transactions.length="+transactions);
                 if(transactions.length>0){
                     var transactionsstr01=JSON.stringify(transactions);
                     console.log("transactionsstr01="+transactionsstr01);
                     var uri='http://127.0.0.1:8080/etf/addTransactionCount';
                     var post={transactionsstr:JSON.stringify(transactions)};//JSON.stringify(json)把json转化成字符串
+                    console.log("aaaaaaaaaaaaaaaaaaaaaaa="+post);
                     $.post(uri,post).success(function(){
                       console.log("transactionsstr保存成功===整除");
                     });

@@ -202,7 +202,7 @@ angular.module('ethExplorer')
     	function switchToHooked3(_keystore){
     		console.log("switchToHooked3");
     		var web3Provider = new HookedWeb3Provider({
-    		  host: "http://192.168.9.147:8545", // check what using in truffle.js
+    		  host: "http://192.168.9.44:8545", // check what using in truffle.js
     		  transaction_signer: _keystore
     		});
 

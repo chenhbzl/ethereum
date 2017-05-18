@@ -29,6 +29,10 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
                 templateUrl: 'views/conference.html',
                 controller: 'conferenceCtrl'
             }).
+            when('/smartsponsor', {
+                templateUrl: 'views/smartsponsor.html',
+                controller: 'smartsponsorCtrl'
+            }).
             otherwise({
                 redirectTo: '/'
             });
@@ -36,7 +40,7 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
     .run(function($rootScope,$interval) {
         var Web3 = require('web3');
         var web3 = new Web3();
-        web3.setProvider(new web3.providers.HttpProvider('http://192.168.9.147:8545'));
+        web3.setProvider(new web3.providers.HttpProvider('http://192.168.9.44:8545'));
         $rootScope.web3=web3;
         function sleepFor( sleepDuration ){
             var now = new Date().getTime();

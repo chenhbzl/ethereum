@@ -30,7 +30,8 @@
 		<ul class="nav nav-pills nav-stacked col-lg-2">
 		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/">区块查询</a></li>
 		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/sign">圆曲线加密</a></li>
-		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/conference">智能合约(参会购票)</a></li>
+		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/conference">智能参会购票(conference)</a></li>
+		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/smartsponsor">智能赞助(smartSponsor)</a></li>
 		</ul>
 		<div class="col-lg-10" ng-view ng-route></div>
 	</div>
@@ -47,6 +48,7 @@
 <script type="text/javascript" src="scripts/controllers/transactionInfosController.js"></script>
 <script type="text/javascript" src="scripts/controllers/sign.js"></script>
 <script type="text/javascript" src="scripts/controllers/conference.js"></script>
+<script type="text/javascript" src="scripts/controllers/smartsponsor.js"></script>
 
 <script type="text/javascript" src="scripts/truffle-contract.min.js"></script>
 <script type="text/javascript" src="scripts/lightwallet.min.js"></script>  
@@ -81,7 +83,7 @@
 $("#modaltext").text( 'geth --rpc --rpccorsdomain "'+ window.location.protocol + '//' +"10.132.97.27:8545" + '"' );
 var Web3 = require('web3');
 var web3 = new Web3();
-var provider = new web3.providers.HttpProvider('http://192.168.9.147:8545'); //�����Լ���ip�޸�
+var provider = new web3.providers.HttpProvider('http://192.168.9.44:8545'); //�����Լ���ip�޸�
 web3.setProvider(provider);
 var number=web3.eth.blockNumber;
 console.log(number);

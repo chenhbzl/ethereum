@@ -1,0 +1,70 @@
+<title>智能赞助的智能合约Conference DApp</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .section {
+      margin: 20px;
+    }
+    button {
+      padding: 5px 16px;
+      border-radius: 4px;
+    }
+    button#changeQuota { background-color: yellow; }
+    button#buyTicket { background-color: #98fb98; }
+    button#refundTicket { background-color: pink; }
+    button#createWallet { background-color: #add8e6; }
+    #seed {color: green;}
+  </style>
+</head>
+<div>
+  <h1>智能赞助的智能合约Conference DApp</h1>
+  <div class="section">
+    Contract deployed at（智能合约在区块链的地址）: <div id="confAddress"></div>
+  </div>
+  <div class="section">
+    Organizer（部署合约者，一般是第一个账户）: <input type="text" id="confOrganizer" />
+  </div>
+  <div class="section">
+         设置募捐受益者: <input type="text" id="benefactor" />
+      <button ng-click="setBenefactor()">setBenefactor</button>
+      <span id="changeBenefactor"></span>
+  </div>
+  <div class="section">
+       募捐数量: <span id="numPledges">0</span>
+  </div>
+  <div class="section">
+       募捐金额: <span id="balance">0</span> 
+  </div>
+  <hr/>
+  
+  <div class="section">
+    <h2>募捐</h2>
+               募捐（金额）: <input type="text" id="ticketPrice" value="0.005" /> 
+               购买者: <input type="text" id="buyerAddress" />
+      <button ng-click="pledge()">pledge</button>
+      <span id="buyTicketResult"></span>
+  </div>
+
+  <hr/>
+
+  <div class="section">
+    <h2>赠与受益者</h2>
+      <button ng-click="drawdown()">drawdown</button>
+      <span id="drawdownResult"></span>
+  </div>
+  
+  <div class="section">
+    <h2>退还给募捐者</h2>
+      <button ng-click="refund()">refund</button>
+      <span id="refundResult"></span>
+  </div>
+
+  <div class="section">
+    <h2>查询受益者金额</h2>
+      <button ng-click="benefactorBalance()">benefactorBalance</button>
+      <span id="benefactorBalanceResult"></span>
+  </div>
+  
+  <hr/>
+</div>
