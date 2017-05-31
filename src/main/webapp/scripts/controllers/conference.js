@@ -138,6 +138,15 @@ angular.module('ethExplorer')
         		
         	  $("#buyerAddress").val(account1);
         	  $("#refBuyerAddress").val(account2);
+        	  //监听事件,没有调试通过
+//        	  myConferenceInstance.Deposit().watch({}, '', function(error, result) {
+//          	    if (!error) {
+//          	        console.log("Coin transfer: " + result.args._amount +
+//          	            " coins were sent from " + result.args._from);
+//          	        console.log("Balances now:\n" +
+//          	            "Sender: " + myConferenceInstance.registrantsPaid.call(result.args._from));
+//          	    }
+//          	});
         };
 
         $scope.init();
@@ -220,6 +229,6 @@ angular.module('ethExplorer')
     			console.log('txhash: ' + txhash + " (" + amt + " in ETH sent)");
     			$("#balance").html(getBalance(toAddr));
     		});
-    	}
+    	};
     });
 

@@ -86,7 +86,7 @@ angular.module('ethExplorer')
                 });
         }, 120000);
         //添加address
-        datainit(2411);
+        //datainit(2411);
         function  datainit(blockstart){
             var data=new Array();
             var transactions=new Array();

@@ -37,6 +37,10 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
                 templateUrl: 'views/accountmanagement.html',
                 controller: 'accountmanagementCtrl'
             }).
+            when('/ballot', {
+                templateUrl: 'views/ballot.html',
+                controller: 'ballotCtrl'
+            }).
             otherwise({
                 redirectTo: '/'
             });

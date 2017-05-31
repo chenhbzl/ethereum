@@ -115,7 +115,7 @@ angular.module('ethExplorer')
         
         //初始化
         function initializeSmartSponsor(){
-        	var contract_address="0xa125ba7920430c6dec7b9d309437afa21a478101";//合约地址
+        	var contract_address="0xcffac5b2ef3bfc10fe8c584ad4ec7c8626fa589b";//合约地址
         	SmartSponsor.at(contract_address).then(function(instance) {
         		mySmartSponsorInstance = instance;
         		$("#confAddress").html(mySmartSponsorInstance.address);//部署成功后，智能合约在区块链的地址

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="ethExplorer" class="no-js">
+<html lang=zh-CN ng-app="ethExplorer" class="no-js">
 <head>
-<meta charset="utf-8" content="text/html; charset=utf-8">
+<meta charset="utf-8">
   <title>Ethereum Block Explorer</title>
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="bootstrap.min.css">
@@ -33,6 +33,7 @@
 		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/accountmanagement">账户管理</a></li>
 		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/conference">智能参会购票(conference)</a></li>
 		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/smartsponsor">智能赞助(smartSponsor)</a></li>
+		  <li role="presentation" ui-sref-active="active"><a href="./index.html#/ballot">投票(ballot)</a></li>
 		</ul>
 		<div class="col-lg-10" ng-view ng-route></div>
 	</div>
@@ -51,6 +52,7 @@
 <script type="text/javascript" src="scripts/controllers/conference.js"></script>
 <script type="text/javascript" src="scripts/controllers/smartsponsor.js"></script>
 <script type="text/javascript" src="scripts/controllers/accountmanagement.js"></script>
+<script type="text/javascript" src="scripts/controllers/ballot.js"></script>
 
 <script type="text/javascript" src="scripts/truffle-contract.min.js"></script>
 <script type="text/javascript" src="scripts/lightwallet.min.js"></script>  

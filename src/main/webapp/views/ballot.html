@@ -1,0 +1,63 @@
+<title>投票的智能合约Ballot DApp</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .section {
+      margin: 20px;
+    }
+    button {
+      padding: 5px 16px;
+      border-radius: 4px;
+    }
+    button#changeQuota { background-color: yellow; }
+    button#buyTicket { background-color: #98fb98; }
+    button#refundTicket { background-color: pink; }
+    button#createWallet { background-color: #add8e6; }
+    #seed {color: green;}
+  </style>
+</head>
+<div>
+  <h1>投票的智能合约Ballot DApp</h1>
+  <div class="section">
+    Contract deployed at（智能合约在区块链的地址）: <div id="confAddress"></div>
+  </div>
+  <div class="section">
+     添加投票项（汉字乱码）: <input type="text" id="proposals" value="" /> 
+  <button ng-click="addProposals()">添加投票项</button>
+  <span id="proposalsResult"></span>
+  </div>
+
+  <hr/>
+  <div class="section">
+         添加可投票人员: <input type="text" id="voterAddress" value="" /> 
+    <button ng-click="giveRightToVote()">添加人员</button>
+    <span id="voterAddressResult"></span>
+  </div>
+  <hr/>
+  <div class="section">
+    <h2>委托</h2>
+         被委托人: <input type="text" id="coverDelegate" value="" /> 
+         委托人: <input type="text" id="delegate" />
+      <button ng-click="delegate()">投票</button>
+      <span id="delegateResult"></span>
+  </div>
+  <hr/>
+  <div class="section">
+    <h2>投票</h2>
+         投票人员: <input type="text" id="proposalAddress" value="" /> 
+         投票项: <input type="text" id="proposal" />
+      <button ng-click="vote()">投票</button>
+      <span id="voteResult"></span>
+  </div>
+  <hr/>
+  <div class="section">
+    <h2>获取投票信息</h2>
+      <button ng-click="winningProposal()">获取投票信息</button>
+      投票项：<span id="winningProposal"></span>
+      投票数量：<span id="winningVoteCount"></span>
+      投票项名称：<span id="name"></span>
+  </div>
+
+  <hr/>
+</div>
