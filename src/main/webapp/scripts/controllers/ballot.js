@@ -33,6 +33,7 @@ angular.module('ethExplorer')
         	  //修改默认票数
         	  $scope.addProposals = function(){
         		  var val = $("#proposals").val();
+        		  //val = web3.fromUtf8(val, 32);
         		  myBallotInstance.setProposal(val,{from:accounts[0]}).then(
 				  	  function(result){
 				  		  var msgResult;
@@ -104,8 +105,11 @@ angular.module('ethExplorer')
 				  	  function(result){
 		  				$("#winningProposal").html(result[0]+"");
 		  				$("#winningVoteCount").html(result[1]+"");
-		  				console.log(result);
-		  				$("#name").html(web3.toAscii(result[2]));
+		  				console.log(web3.toUtf8(result[2]));
+		  				$("#name").html(web3.toUtf8(result[2]));
+//		  				var str2 = web3.fromUtf8('投票', 32);
+//		  				console.log(str2);
+//		  				console.log(web3.toUtf8(str2));
 				  	  }
 				  	);
         	  };
@@ -137,7 +141,7 @@ angular.module('ethExplorer')
         
         //初始化
         function initializeBallot(){
-        	var contract_address="0x39f307465dd2ae8d61bc82e2cb53a1d8c8247f48";//合约地址
+        	var contract_address="0xcb3e8222da066b28599e98a457f46f11c7a8f19d";//合约地址
         	Ballot.at(contract_address).then(function(instance) {
         		myBallotInstance = instance;
         		$("#confAddress").html(myBallotInstance.address);//部署成功后，智能合约在区块链的地址
