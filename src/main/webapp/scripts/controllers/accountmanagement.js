@@ -19,15 +19,16 @@ angular.module('ethExplorer')
         }
         
         $scope.init=function(){
-        	$scope.unlockAccount= function(){
+        	$scope.unlockAccount= function(i){
         		var address = $("#address").val();
-        		var password = $("#password").val();
+        		var passwordId = "#password"+i;
+        		var password = $(passwordId).val();
                 $http.post('http://127.0.0.1:8080/account/unlockAccount?address='+address+'&password='+password)
                     .success(function(data){
                     	if(data.result){
-                    		$("#unlockAccountResult").html("解锁成功");
+                    		$("#unlockAccountResult"+i).html("解锁成功");
                     	}else{
-                    		$("#unlockAccountResult").html("解锁失败");
+                    		$("#unlockAccountResult"+i).html("解锁失败");
                     	}
                     }).error(function(data){
                         console.log(data);
@@ -63,7 +64,7 @@ angular.module('ethExplorer')
         		var value = $("#value").val();
         		var password = $("#addAccountPassword").val();
         		$("#sendTransactionResult").html();
-                $http.post('http://127.0.0.1:8080/etf/sendTransaction?address1='+address1+'&address2='+address2+'&value='+value+'&password='+password)
+                $http.post('http://127.0.0.1:8080/account/sendTransaction?address1='+address1+'&address2='+address2+'&value='+value+'&password='+password)
                     .success(function(data){
                     	if(data.result!=null && data.result.length==66){
                     		$("#sendTransactionResult").html("添加账户成功");

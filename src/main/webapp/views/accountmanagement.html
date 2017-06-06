@@ -22,9 +22,9 @@
                             </li>
                             <div class="closediv opendiv div{{$index}}" style="display: none;">
                                 <ul>
-									 输入密码：<input type="text" id="password" /><input type="hidden" id="address" value="{{account.address}}"/>
-									 <button ng-click="unlockAccount()">unlockAccount</button>
-									 <span id="unlockAccountResult"></span>
+									 输入密码：<input type="text" id="password{{$index}}" /><input type="hidden" id="address" value="{{account.address}}"/>
+									 <button ng-click="unlockAccount($index)">unlockAccount</button>
+									 <span id="unlockAccountResult{{$index}}"></span>
                                 </ul>
                             </div>
                         </ul>
@@ -39,7 +39,7 @@
 		               电话: <input type="text" id="phone"/> 
 		               地址: <input type="text" id="address"/>
 		               学校: <input type="text" id="school"/>
-		               <hr>
+		               <br><br>
 		               姓名: <input type="text" id="userName"/>
 		               账号: <input type="text" id="accountName"/>
 		               密码: <input type="text" id="addAccountPassword"/>
