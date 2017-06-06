@@ -141,7 +141,7 @@ angular.module('ethExplorer')
         
         //初始化
         function initializeBallot(){
-        	var contract_address="0xcb3e8222da066b28599e98a457f46f11c7a8f19d";//合约地址
+        	var contract_address="0xdd504135312091b6b6779b84a48d8d724fa0ce15";//合约地址
         	Ballot.at(contract_address).then(function(instance) {
         		myBallotInstance = instance;
         		$("#confAddress").html(myBallotInstance.address);//部署成功后，智能合约在区块链的地址
