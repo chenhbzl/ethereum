@@ -62,7 +62,7 @@ angular.module('ethExplorer')
         		var address1 = $("#address1").val();
         		var address2 = $("#address2").val();
         		var value = $("#value").val();
-        		var password = $("#addAccountPassword").val();
+        		var password = $("#sendAccountPassword").val();
         		$("#sendTransactionResult").html();
                 $http.post('http://127.0.0.1:8080/account/sendTransaction?address1='+address1+'&address2='+address2+'&value='+value+'&password='+password)
                     .success(function(data){
