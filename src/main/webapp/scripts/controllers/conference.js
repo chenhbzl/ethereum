@@ -59,6 +59,8 @@ angular.module('ethExplorer')
           	  	  var buyerAddress = $("#buyerAddress").val();
           		  myConferenceInstance.buyTicket({from:buyerAddress,value:web3.toWei(val)}).then(
           		    function(){
+          		    	var testEvent = myConferenceInstance.Deposit();
+          		    	testEvent.watch(function (error, result) {  if(!error){console.log(JSON.stringify(result)); } });//通过调用事件，获取信息
           		    return 	myConferenceInstance.numRegistrants.call();//获取买票的数量
           		  }).then(
           		    function(num){
@@ -153,7 +155,7 @@ angular.module('ethExplorer')
         
         //初始化
         function initializeConference(){
-        	var contract_address="0x17b3bc32942907ec1035218b31929cc21bf5577d";//合约地址
+        	var contract_address="0x901225b02ee3a31c5ff1f9fffcfb50c7117c41e1";//合约地址
         	Conference.at(contract_address).then(function(instance) {
         		myConferenceInstance = instance;
         		$("#confAddress").html(myConferenceInstance.address);//部署成功后，智能合约在区块链的地址

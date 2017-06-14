@@ -117,6 +117,10 @@ public class AccountController {
 		EthTransaction ethTransaction = web3j.ethGetTransactionByHash("0x4495de08cffbd114d2988729be03973a7434902613ca7265469d6df4adebb06e").send();
 		System.out.println(HexUtils.decode(ethTransaction.getResult().getInput()));  message保存到input
 		*/
+		
+		/*EthEstimateGas ethEstimateGas = web3j.ethEstimateGas(transaction).send();//根据上面的transaction获取gasLimit
+		ethEstimateGas.getAmountUsed(); //获取gasLimit
+        web3j.ethGasPrice().send().getGasPrice(); //获取gasPrice  这两个可以用户创建Transaction*/		
 		try {
 			EthSendTransaction ethSendTransaction = parity.personalSignAndSendTransaction(transaction, password).send();
 			if(ethSendTransaction!=null){
