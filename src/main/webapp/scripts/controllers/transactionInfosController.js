@@ -1,14 +1,14 @@
 angular.module('ethExplorer')
-    .controller('transactionInfosCtrl', function ($rootScope, $scope, $location, $routeParams,$q) {
-        $scope.init=function()
-        {
+    .controller('transactionInfosCtrl', function ($rootScope, $scope, $location, $routeParams,$q,$http) {
+        $scope.init=function(){
            $scope.txId=$routeParams.transactionId;
-           if($scope.txId!==undefined) { // add a test to check if it match tx paterns to avoid useless API call, clients are not obliged to come from the search form...
-
+           if($scope.txId!==undefined) {
                 getTransactionInfos()
                     .then(function(result){
-                    var number = web3.eth.blockNumber;
-
+                    var number = 0;
+                    $http.post('http://127.0.0.1:8080/block/blockNumber').success(function(data){
+                    	number=data;
+                    });
                     $scope.result = result;
 
                     if(result.blockHash!==undefined){
@@ -36,46 +36,36 @@ angular.module('ethExplorer')
                     if($scope.blockNumber!==undefined){
                         $scope.conf = number - $scope.blockNumber + " Confirmations";
                         if($scope.conf==0){
-                            $scope.conf='unconfirmed'; //TODO change color button when unconfirmed... ng-if or ng-class
+                            $scope.conf='unconfirmed'; 
                         }
                     }
-                        //TODO Refactor this logic, asynchron calls + services....
+                       
                     if($scope.blockNumber!==undefined){
-                        var info = web3.eth.getBlock($scope.blockNumber);
-                        if(info!==undefined){
-                            $scope.time = new Date(info.timestamp * 1000).toUTCString();
-                        }
+                        $http.post('http://127.0.0.1:8080/block/getBlock?blockId='+$scope.blockNumber).success(function(data){
+                        	if (data !== undefined){
+                        		var newDate = new Date();
+                        		newDate.setTime(data.timestamp * 1000);
+                        		$scope.time = newDate.toUTCString();
+                        	}
+                        });
                     }
 
                 });
 
             }
-
-
 
             else{
                 $location.path("/"); // add a trigger to display an error message so user knows he messed up with the TX number
             }
 
-
             function getTransactionInfos(){
                 var deferred = $q.defer();
-                web3.eth.getTransaction($scope.txId,function(error, result) {
-                    if(!error){
-                        deferred.resolve(result);
-                    }
-                    else{
-                        deferred.reject(error);
-                    }
+                $http.post('http://127.0.0.1:8080/block/ethGetTransactionByHash?txId='+$scope.txId).success(function(result){
+                   deferred.resolve(result);
                 });
                 return deferred.promise;
 
             }
-
-
-
         };
         $scope.init();
-        console.log($scope.result);
-
     });

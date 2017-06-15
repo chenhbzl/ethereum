@@ -36,7 +36,9 @@ angular.module('ethExplorer')
             $(".closediv").removeClass("opendiv");
             $(".div"+index).addClass("opendiv").slideToggle("slow");
         };
-        $scope.blockNum = web3.eth.blockNumber;
+        $http.post('http://127.0.0.1:8080/block/blockNumber').success(function(data){
+        	$scope.blockNum=data;
+        });
         //获取全部accounts
         // datainit();
         /**
@@ -59,10 +61,13 @@ angular.module('ethExplorer')
             return deferred.promise;   // 返回承诺，这里返回的不是数据，而是API
         }
         function accountinit(address_data){
-            var result=address_data;//web3.eth.accounts;
+            var result=address_data;
             var accounts=new Array();
             for(i in result){
-                var balance = web3.eth.getBalance(result[i]);
+                var balance = 0;
+                $http.post('http://127.0.0.1:8080/block/getBalance?addressId='+result[i]).success(function(result){
+                	balance = result;
+                });
                 var balanceInEther=web3.fromWei(balance, 'ether');
                 var account=new Object();
                 account.addressId=result[i];
@@ -90,26 +95,29 @@ angular.module('ethExplorer')
         function  datainit(blockstart){
             var data=new Array();
             var transactions=new Array();
-            var blockend=web3.eth.blockNumber;
+            var blockend=0;
+            $http.post('http://127.0.0.1:8080/block/blockNumber').success(function(data){
+            	blockend=data;
+            });
             console.log("-----"+blockstart+"========"+blockend);
             for(var i=blockstart+1;i<=blockend;i++){
-                var blockinfo= web3.eth.getBlock(i);
-                console.log(i+"----"+blockinfo.miner);
-                // accountinit(blockinfo.miner);
-                var  block={
-                    blockId:blockinfo.number,
-                    address:blockinfo.miner,//地址信息
-                    transactionArr:blockinfo.transactions.join()//交易地址
-                };
-                data.push(blockinfo.miner);
-                if(block.transactionArr.length>0){
-                    console.log("transactionArr="+block.transactionArr);
-                    console.log("blockId="+block.blockId);
-                    transactions.push(block);
-                }
+                $http.post('http://127.0.0.1:8080/block/getBlock?blockId='+i).success(function(blockinfo){
+                	console.log(i+"----"+blockinfo.miner);
+                    var  block={
+                        blockId:blockinfo.number,
+                        address:blockinfo.miner,//地址信息
+                        transactionArr:blockinfo.transactions.join()//交易地址
+                    };
+                    data.push(blockinfo.miner);
+                    if(block.transactionArr.length>0){
+                        console.log("transactionArr="+block.transactionArr);
+                        console.log("blockId="+block.blockId);
+                        transactions.push(block);
+                    }
+                });
+                
             }
             var address_data=unique(data);
-            //console.log(address_data);
             if(blockend>blockstart){
                 addAddressJSON(address_data,transactions,blockend);
             }
@@ -139,7 +147,6 @@ angular.module('ethExplorer')
                     console.log("transactionsstr01="+transactionsstr01);
                     var uri='http://127.0.0.1:8080/etf/addTransactionCount';
                     var post={transactionsstr:JSON.stringify(transactions)};//JSON.stringify(json)把json转化成字符串
-                    console.log("aaaaaaaaaaaaaaaaaaaaaaa="+post);
                     $.post(uri,post).success(function(){
                       console.log("transactionsstr保存成功===整除");
                     });

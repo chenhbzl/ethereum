@@ -1,5 +1,5 @@
 angular.module('ethExplorer')
-    .controller('addressInfosCtrl', function ($rootScope, $scope, $location, $routeParams, $q) {
+    .controller('addressInfosCtrl', function ($rootScope, $scope, $location, $routeParams, $q,$http) {
 
         $scope.init=function(){
 
@@ -14,18 +14,14 @@ angular.module('ethExplorer')
 
 
             function getAddressInfos(){
-                var deferred = $q.defer();//////
+                var deferred = $q.defer();
                 console.log(deferred);
-                web3.eth.getBalance($scope.addressId,function(error, result) {
+                $http.post('http://127.0.0.1:8080/block/getBalance?addressId='+$scope.addressId).success(function(result){
                     console.log(result);
-                    if(!error) {
-                        deferred.resolve({
-                            balance: result.toNumber(),
-                            balanceInEther: web3.fromWei(result, 'ether').toNumber()
-                        });
-                    } else {
-                        deferred.reject(error);
-                    }
+                    deferred.resolve({
+                        balance: result,
+                        balanceInEther: web3.fromWei(result, 'ether')
+                    });
                 });
                 return deferred.promise;
             }

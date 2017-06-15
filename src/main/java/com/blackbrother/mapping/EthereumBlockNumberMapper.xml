@@ -22,6 +22,9 @@
     </trim>
   </insert>
   
+  <select id="getBlockNumber" resultType="java.lang.Integer">
+   		select * from ethereum_blockNumber
+   </select>
    <!-- 更新区块数量 -->
    <update id="updateBlockNumber" parameterType="java.lang.Integer">
    		update ethereum_blockNumber set blocknumber=#{number}

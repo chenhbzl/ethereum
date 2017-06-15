@@ -1,12 +1,14 @@
 angular.module('ethExplorer')
-    .controller('blockInfosCtrl', function ($rootScope, $scope, $location, $routeParams, $q) {
+    .controller('blockInfosCtrl', function ($rootScope, $scope, $location, $routeParams, $q,$http) {
         $scope.init = function() {
             $scope.blockId = $routeParams.blockId;
-            $scope.blockNumber=web3.eth.blockNumber;
             if ($scope.blockId !== undefined) {
                 getBlockInfos($scope.blockId)
                     .then(function(result) {
-                        var blockNumber = web3.eth.blockNumber;
+                    	var blockNumber = 0;
+                    	$http.post('http://127.0.0.1:8080/block/blockNumber').success(function(data){
+                    		blockNumber=data;
+                        });
                         $scope.result = result;
 
                         if (result.hash !== undefined) {
@@ -48,12 +50,13 @@ angular.module('ethExplorer')
                         }
 
                         if ($scope.blockNumber != undefined){
-                            var info = web3.eth.getBlock($scope.blockNumber);
-                            if (info !== undefined){
-                                var newDate = new Date();
-                                newDate.setTime(info.timestamp * 1000);
-                                $scope.time = newDate.toUTCString();
-                            }
+                            $http.post('http://127.0.0.1:8080/block/getBlock?blockId='+$scope.blockNumber).success(function(data){
+                            	if (data !== undefined){
+                            		var newDate = new Date();
+                            		newDate.setTime(data.timestamp * 1000);
+                            		$scope.time = newDate.toUTCString();
+                            	}
+                            });
                         }
                     });
 
@@ -65,12 +68,10 @@ angular.module('ethExplorer')
             function getBlockInfos(blockId){
                 var deferred = $q.defer();
                 //获取区块信息
-                web3.eth.getBlock(blockId, function(error, result) {
-                    if(!error) {
-                        deferred.resolve(result);
-                    } else {
-                        deferred.reject(error);
-                    }
+                $http.post('http://127.0.0.1:8080/block/getBlock?blockId='+blockId).success(function(data){
+                    deferred.resolve(data);//请求成功
+                }).error(function(data){
+                    console.log(data);
                 });
                 return deferred.promise;
             }
@@ -81,26 +82,24 @@ angular.module('ethExplorer')
         // parse transactions
         $scope.transactions = []
 
-        web3.eth.getBlockTransactionCount($scope.blockId, function(error, result){//获取一个块内的交易数
-            var txCount = result
+        $http.post('http://127.0.0.1:8080/block/getBlockTransactionCount?blockId='+$scope.blockId).success(function(result){
+            var txCount = result;
             for (var blockIdx = 0; blockIdx < txCount; blockIdx++) {
             	console.log("Result: ", $scope.blockId+"-------"+blockIdx);
-                web3.eth.getTransactionFromBlock($scope.blockId, blockIdx, function(error, result) {//获取某个区块第几个交易信息
+            	$http.post('http://127.0.0.1:8080/block/getTransactionFromBlock?blockId='+$scope.blockId+"&blockIdx="+blockIdx).success(function(result){
 	                console.log("Result: ", result.hash);
-                    web3.eth.getTransactionReceipt(result.hash, function(error, receipt) {//根据hash获取某个交易的详细信息
+	                $http.post('http://127.0.0.1:8080/block/getTransactionReceipt?hash='+result.hash).success(function(receipt){
                         var transaction = {
                             id: receipt.transactionHash,
                             hash: receipt.transactionHash,
                             from: receipt.from,
                             to: receipt.to,
                             gas: receipt.gasUsed,
-                            input: result.input.slice(2),
+                            input: result.input,
                             value: parseInt(result.value),
                             contractAddress: receipt.contractAddress
                         }
-                        $scope.$apply(
-                            $scope.transactions.push(transaction)
-                        );
+                        $scope.transactions.push(transaction);
                     });
                 })
             }

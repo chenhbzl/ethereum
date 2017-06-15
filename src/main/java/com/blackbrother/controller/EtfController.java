@@ -1,7 +1,5 @@
 package com.blackbrother.controller;
 
-import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,19 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.web3j.protocol.Web3j;
 
 import com.blackbrother.model.EthereumAtranction;
 import com.blackbrother.service.EthereumServe;
 import com.blackbrother.util.BaseController;
-import com.blackbrother.util.Web3JClient;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @RestController
 public class EtfController extends BaseController{
-	private static Web3j web3j = Web3JClient.getClient();
 	@Autowired
 	private EthereumServe ethereumServe;
 
@@ -68,14 +63,9 @@ public class EtfController extends BaseController{
 	@RequestMapping(value = "etf/getBlockCount", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Integer> getBlockCount(HttpServletResponse response) {
-		BigInteger number = new BigInteger("0");
-		try {
-			number = web3j.ethBlockNumber().send().getBlockNumber();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		int number = ethereumServe.getBlockNumber();
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("blockNumber", number.intValue());
+		map.put("blockNumber", number);
 		return map;
 	}
 
