@@ -28,6 +28,17 @@
                                 </ul>
                             </div>
                         </ul>
+                        <ul>
+                            <li ng-click="toggleBalance($index)" style="list-style:none;color:#337ab7" ng-class="{'index':$index==temp}">
+                                                                         余额
+                            </li>
+                            <div class="closediv opendiv divBalance{{$index}}" style="display: none;">
+                                <ul>
+									 <button ng-click="getBalance($index)">获取余额</button>
+									 <span id="balanceResult{{$index}}"></span>
+                                </ul>
+                            </div>
+                        </ul>
                     </td>
                 </tr>
                 </tbody>

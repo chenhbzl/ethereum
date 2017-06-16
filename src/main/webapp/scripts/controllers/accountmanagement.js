@@ -4,6 +4,10 @@ angular.module('ethExplorer')
             $(".closediv").removeClass("opendiv");
             $(".div"+index).addClass("opendiv").slideToggle("slow");
         };
+        $scope.toggleBalance=function(index) {
+            $(".closediv").removeClass("opendiv");
+            $(".divBalance"+index).addClass("opendiv").slideToggle("slow");
+        };
     	getAllAccount().then(function(result){
             $scope.accounts=result;
         });
@@ -33,6 +37,15 @@ angular.module('ethExplorer')
                     }).error(function(data){
                         console.log(data);
                     });
+        	};
+        	
+        	$scope.getBalance= function(i){
+        		var address = $("#address").val();
+        		$http.post('http://127.0.0.1:8080/block/getBalance?addressId='+address).success(function(result){
+                	$("#balanceResult"+i).html(web3.fromWei(result, 'ether'));
+                }).error(function(result){
+                    console.log(result);
+                });
         	};
         	
         	$scope.newAccount= function(){
