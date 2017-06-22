@@ -1,9 +1,9 @@
 angular.module('ethExplorer')
-    .controller('signCtrl', function ($rootScope, $scope, $location, $routeParams, $q) {
+    .controller('signCtrl', function ($rootScope, $scope, $location, $routeParams, $q,$http) {
     	var account = "";
     	var sha3Msg = "";
     	var signedData = "";
-    	var decode;
+    	var decode = "";
         $scope.init=function(){
 
         	account = web3.eth.accounts[0]; 
@@ -15,7 +15,6 @@ angular.module('ethExplorer')
         	$("#sha3Msg").html(sha3Msg);
         	$("#signedData").html(signedData);
         	
-        	var decode;
 
         	$.ajax({
         	   type: "get",
@@ -32,12 +31,12 @@ angular.module('ethExplorer')
         $scope.init();
         
         function initializeDecode(){
-        	var contract_address="0x316c83b71d856227cd794c0ada1caac1afb5aa1b";//合约地址
+        	var contract_address="0xadddcc7e2967f177bdff43b83d79b16e32da1d51";//合约地址
         	Decode.at(contract_address).then(function(instance) {
         		decode = instance;
         		$("#confAddress").html(decode.address);
  	    	    console.log(decode);
-        	})
+        	});
         };
         
         
@@ -52,7 +51,35 @@ angular.module('ethExplorer')
           	    $("#decodeAddress").val(decodeAddress);
           	  }
           	);
-        }
-
+        };
+        
+        $scope.GetSha3 = function(){
+        	var message = $("#message").val();
+        	$http.post('http://127.0.0.1:8080/ecrecover/getSha3?message='+message).success(function(data){
+        		$("#sha3Result").html(data.web3Sha3);
+            });
+        };
+        
+        $scope.GetSignedData = function(){
+        	var address = $("#address").val();
+        	var sha3Result = $("#sha3Result").html();
+        	$http.post('http://127.0.0.1:8080/ecrecover/getSignedData?address='+address+"&sha3Result="+sha3Result).success(function(data){
+        		$("#signedDataResult").html(data.signature);
+            });
+        };
+        
+        $scope.GetResult = function(){
+        	var sha3Result = $("#sha3Result").html();
+        	var signedDataResult = $("#signedDataResult").html();
+        	var address = $("#address").val();
+        	$http.post('http://127.0.0.1:8080/ecrecover/getResult?sha3Result='+sha3Result+"&signedDataResult="+signedDataResult).success(function(data){
+        		$("#addressResult").html(data.personalEcRecover);
+        		if(data.personalEcRecover==address){
+        			$("#result").html("解密成功");
+        		}else{
+        			$("#result").html("解密失败");
+        		};
+            });
+        };
     });
 

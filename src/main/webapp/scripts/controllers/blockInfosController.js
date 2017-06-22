@@ -5,7 +5,6 @@ angular.module('ethExplorer')
             if ($scope.blockId !== undefined) {
                 getBlockInfos($scope.blockId)
                     .then(function(result) {
-                    	var blockNumber = 0;
                     	$http.post('http://127.0.0.1:8080/block/blockNumber').success(function(data){
                     		blockNumber=data;
                         });
@@ -80,7 +79,7 @@ angular.module('ethExplorer')
         $scope.init();
 
         // parse transactions
-        $scope.transactions = []
+        $scope.transactions = [];
 
         $http.post('http://127.0.0.1:8080/block/getBlockTransactionCount?blockId='+$scope.blockId).success(function(result){
             var txCount = result;
@@ -95,13 +94,13 @@ angular.module('ethExplorer')
                             from: receipt.from,
                             to: receipt.to,
                             gas: receipt.gasUsed,
-                            input: result.input,
+                            input: web3.toUtf8(result.input),//需要web3.fromUtf8('投票', 32)存入区块链
                             value: parseInt(result.value),
                             contractAddress: receipt.contractAddress
-                        }
+                        };
                         $scope.transactions.push(transaction);
                     });
-                })
+                });
             }
         });
 

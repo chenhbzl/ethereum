@@ -36,5 +36,19 @@
     公匙地址(第一个账号): <input type="text" id="decodeAddress" size="50"/>
       <button ng-click="GetDecode()">GetDecode</button>
   </div>
+  <h1>上面的testrpc测试通过，以太坊客户端没有通过</h1>
+  <div class="section">
+         需要签名的数据: <input type="text" id="message" value="" /> 
+    <button ng-click="GetSha3()">>></button>转换成十六进制后数据生成哈希串: <div id="sha3Result"></div>
+  </div>
+  
+  <div class="section">
+       输入一个账号(公钥)，生成数字签名: 
+   <input type="text" id="address" value="" /> 
+    <button ng-click="GetSignedData()">>></button>数字签名:<div id="signedDataResult"></div>
+  </div>
+  <div class="section">
+      <button ng-click="GetResult()">解密</button><div id="addressResult"></div><div id="result"></div>
+  </div>
 </div>
 

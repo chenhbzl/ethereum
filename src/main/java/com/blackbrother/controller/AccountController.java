@@ -17,18 +17,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.EthBlock;
-import org.web3j.protocol.core.methods.response.EthBlock.Block;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.core.methods.response.EthSign;
+import org.web3j.protocol.core.methods.response.Web3Sha3;
 import org.web3j.protocol.parity.Parity;
 import org.web3j.protocol.parity.methods.response.NewAccountIdentifier;
+import org.web3j.protocol.parity.methods.response.PersonalEcRecover;
 import org.web3j.protocol.parity.methods.response.PersonalUnlockAccount;
-import org.web3j.utils.Numeric;
 
 import com.blackbrother.model.AccountInfo;
 import com.blackbrother.model.EthereumAtranction;
+import com.blackbrother.util.HexUtils;
 import com.blackbrother.util.ParityClient;
 import com.blackbrother.util.Web3JClient;
 
@@ -133,7 +134,55 @@ public class AccountController {
 		return map;
 	}
 	
+	//转换成十六进制后数据生成哈希串
+    @RequestMapping(value = "ecrecover/getSha3", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getSha3(HttpServletRequest request) {
+		String message = request.getParameter("message");
+		Web3Sha3 web3Sha3 = null;
+		try {
+			web3Sha3 = web3j.web3Sha3(HexUtils.encode(message)).send();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("web3Sha3", web3Sha3.getResult());
+		return map;
+	}
 	
+    
+    @RequestMapping(value = "ecrecover/getSignedData", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getSignedData1(HttpServletRequest request) {
+		String address = request.getParameter("address");
+		String sha3Result = request.getParameter("sha3Result");
+		EthSign ethSign = null;
+		try {
+			ethSign = web3j.ethSign(address, sha3Result).send();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("signature", ethSign.getSignature());
+		return map;
+	}
+	
+    
+    @RequestMapping(value = "ecrecover/getResult", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getResult(HttpServletRequest request) {
+		String sha3Result = request.getParameter("sha3Result");
+		String signedDataResult = request.getParameter("signedDataResult");
+		PersonalEcRecover personalEcRecover = null;
+		try {
+			personalEcRecover = parity.personalEcRecover(sha3Result, signedDataResult).send();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("personalEcRecover", personalEcRecover.getResult());
+		return map;
+	}
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 //		PersonalUnlockAccount personalUnlockAccount = parity.personalUnlockAccount("0x56e8e462b874cc88f4a0b3e458b1bb4ba8429738", "123456", new BigInteger("10000")).send();
