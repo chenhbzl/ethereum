@@ -21,30 +21,6 @@
 
 	<build>
 		<finalName>ethereum</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>install-external</id>
-						<phase>clean</phase>
-						<configuration>
-							<file>${project.basedir}/src/main/resources/lib/sqljdbc4.jar</file>
-							<repositoryLayout>default</repositoryLayout>
-							<groupId>com.microsoft</groupId>
-							<artifactId>sqljdbc4</artifactId>
-							<version>4.0</version>
-							<packaging>jar</packaging>
-							<generatePom>true</generatePom>
-						</configuration>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 
 		<resources>
 			<resource>
@@ -67,11 +43,6 @@
 		</dependency>
 		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> 
 			<scope>runtime</scope> </dependency> -->
-		<dependency>
-			<groupId>com.microsoft</groupId>
-			<artifactId>sqljdbc4</artifactId>
-			<version>4.0</version>
-		</dependency>
 		<!-- <dependency> <groupId>joda-time</groupId> <artifactId>joda-time</artifactId> 
 			</dependency> -->
 		<dependency>
