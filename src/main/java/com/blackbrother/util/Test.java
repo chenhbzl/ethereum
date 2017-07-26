@@ -1,14 +1,31 @@
 package com.blackbrother.util;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.parity.Parity;
+
+import com.blackbrother.model.Conference;
 
 public class Test {
 	private static Parity parity = ParityClient.getParity();
@@ -48,7 +65,7 @@ public class Test {
 		return "0x"+str;
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
 //		EthTransaction ethTransaction = web3j.ethGetTransactionByHash("0x5782f44eea77bb9d0fd2afe363ed47bc4daf1058f9ca461ab195ced5d015b1e2").send();
 //		System.out.println(HexUtils.decode(ethTransaction.getResult().getInput()));
 //		System.out.println(ethTransaction.getResult().getInput());
@@ -83,28 +100,110 @@ public class Test {
 		
 //		Credentials credentials = null;
 //	    String password = "111111";
-//	    String pathToWalletFile = "//192.168.9.44/home/fanjianbin/eth/chain/keystore/UTC--2017-03-24T01-53-19.639609974Z--882f967839a9984ca20569d703900aa180b9b548";
+//	    //String pathToWalletFile = "/home/fanjianbin/eth/chain/keystore/UTC--2017-03-24T01-53-19.639609974Z--882f967839a9984ca20569d703900aa180b9b548";//0x9df1765fba3bc207a3199cb3c8ddeab626ff328b
+//	    String pathToWalletFile = "/home/fanjianbin/eth/chain/keystore/UTC--2017-03-29T05-33-32.102700340Z--eb97bed0631515013f58b066b8e8561694e06a3b";  //0x4bc43bee043687e4b8cfc0be41f2f01d8addbbb3
 //	    File file = new File(pathToWalletFile);
-//
-//	    try {
-//	        credentials = WalletUtils.loadCredentials(
-//	                password,
-//	                file
-//	        );
-//	    } catch (CipherException e) {
-//	        e.printStackTrace();
-//	    }
-//	    System.out.println(credentials);
-		
-	        URL url = new URL("http://192.168.9.44/home/fanjianbin/eth/chain/keystore/UTC--2017-03-24T01-53-19.639609974Z--882f967839a9984ca20569d703900aa180b9b548");  
-	        InputStream ism=url.openStream();  
-	        byte[] bytes=new byte[1024];  
-	        ism.read(bytes);  
-	        String str=new String(bytes,"utf-8");  
-	        System.err.println(str);  
-	        while(ism.read(bytes)>-1){  
-	            System.err.println(str);  
-	        }  
-	    }  
 
+	    try {
+//	        credentials = WalletUtils.loadCredentials(password,file);
+//	        Conference contract = Conference.deploy(web3j, credentials, new BigInteger("60000"), new BigInteger("900000"), BigInteger.ZERO).get();
+//	        System.out.println(contract.getContractAddress());
+	        
+//	        TransactionManager transactionManager = new RawTransactionManager(web3j, credentials, ChainId.MAIN_NET);
+//	        transactionManager.sendTransaction(new BigInteger("60000"), new BigInteger("900000"), "0x9df1765fba3bc207a3199cb3c8ddeab626ff328b", "aaa", new BigInteger("800000"));
+//	        Conference contract = Conference.load("0x4bc43bee043687e4b8cfc0be41f2f01d8addbbb3", web3j, credentials, new BigInteger("60000"), new BigInteger("900000"));
+////	        Future<TransactionReceipt> futureTransactionReceipt = contract.changeQuota(new Uint256(300));
+//            System.out.println(contract.quota().get().getValue());
+//	        System.out.println(contract.numRegistrants().get().getValue());
+//	        TransactionReceipt transactionReceipt = new TransactionReceipt();
+//	        transactionReceipt.setFrom("eb97bed0631515013f58b066b8e8561694e06a3b");
+//	        contract.setTransactionReceipt(transactionReceipt);
+	        
+//	        Future<TransactionReceipt> buyTicketResult = contract.buyTicket();
+//	        System.out.println(buyTicketResult.get().getBlockNumber());
+//	       Future<TransactionReceipt> refundTicketResult = contract.refundTicket(new Address("0xeb97bed0631515013f58b066b8e8561694e06a3b"), new Uint256(666));
+//	        System.out.println(refundTicketResult.get());
+//	        Future<Uint256> futureUint256 = contract.quota();
+//	        System.out.println(futureUint256.get());
+	        
+	        
+	        
+	        
+//	   Function function = new Function("buyTicket", Arrays.<Type>asList(new Address("0xeb97bed0631515013f58b066b8e8561694e06a3b"), new Uint256(3)), Collections.<TypeReference<?>>emptyList());
+//	   Function function = new Function("buyTicket", Arrays.<Type>asList(), Collections.<TypeReference<?>>emptyList());
+//	   String encodedFunction = FunctionEncoder.encode(function);
+//       Transaction transaction = Transaction.createFunctionCallTransaction("0x43523d18f10cfdd2d7d94d5315d1808d4233df5b", new BigInteger("17"),new BigInteger("60000"), new BigInteger("900000"), "0x9df1765fba3bc207a3199cb3c8ddeab626ff328b", new BigInteger("6"), encodedFunction);
+//////	   
+	   EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(
+			   "0xbb857f3556ea018d7fe2e211bcd4da7a360d858b", DefaultBlockParameterName.LATEST).sendAsync().get();
+	     BigInteger nonce = ethGetTransactionCount.getTransactionCount();
+	     System.out.println("aaaaaaaaa="+nonce);
+//////	   Transaction transaction = Transaction.createFunctionCallTransaction("0x882f967839a9984ca20569d703900aa180b9b548",null,null, null, "0x9df1765fba3bc207a3199cb3c8ddeab626ff328b", new BigInteger("666"), encodedFunction);
+//	   org.web3j.protocol.core.methods.response.EthSendTransaction transactionResponse = web3j.ethSendTransaction(transaction).sendAsync().get();
+//	   String transactionHash = transactionResponse.getTransactionHash();
+//	   System.out.println(transactionHash);
+//	   
+//	   EthSendTransaction ethSendTransaction = parity.personalSignAndSendTransaction(transaction, password).send();
+//	   System.out.println(ethSendTransaction.getTransactionHash());
+	        
+	     //sendTransaction1();
+	        query();
+	     //refundTicket();
+	    	//deploy();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    }  
+	
+	private static void sendTransaction1() throws IOException, InterruptedException, ExecutionException {
+		Function function = new Function("buyTicket", Arrays.<Type>asList(), Collections.<TypeReference<?>>emptyList());
+		String encodedFunction = FunctionEncoder.encode(function);
+		Transaction transaction = Transaction.createFunctionCallTransaction("0xbb857f3556ea018d7fe2e211bcd4da7a360d858b", new BigInteger("10"),new BigInteger("60000"), new BigInteger("900000"), "0xee6b972e169fa2e16dd6208ecc92952e58f1af35", new BigInteger("777"), encodedFunction);
+//		   org.web3j.protocol.core.methods.response.EthSendTransaction transactionResponse = web3j.ethSendTransaction(transaction).sendAsync().get();
+//		   String transactionHash = transactionResponse.getTransactionHash();
+		org.web3j.protocol.core.methods.response.EthSendTransaction transactionResponse = parity.personalSignAndSendTransaction(transaction, "111111").sendAsync().get();
+//		System.out.println(transactionHash);
+		System.out.println(transactionResponse.getResult());
+		System.out.println(transactionResponse.getId());
+	}
+	
+	private static void query() throws IOException, CipherException, InterruptedException, ExecutionException {
+		Credentials credentials = null;
+	    String password = "111111";
+	    String pathToWalletFile = "/home/fanjianbin/eth/chain/keystore/UTC--2017-03-24T01-53-19.639609974Z--882f967839a9984ca20569d703900aa180b9b548";//0xee6b972e169fa2e16dd6208ecc92952e58f1af35
+	    //String pathToWalletFile = "/home/fanjianbin/eth/chain/keystore/UTC--2017-03-29T05-33-32.102700340Z--eb97bed0631515013f58b066b8e8561694e06a3b";  
+	    File file = new File(pathToWalletFile);
+		credentials = WalletUtils.loadCredentials(password,file);
+        Conference contract = Conference.load("0xee6b972e169fa2e16dd6208ecc92952e58f1af35", web3j, credentials, new BigInteger("60000"), new BigInteger("900000"));
+        System.out.println(contract.quota().get().getValue());
+        System.out.println(contract.numRegistrants().get().getValue());
+	}
+	private static void refundTicket() throws InterruptedException, ExecutionException, IOException, CipherException {
+		Credentials credentials = null;
+	    String password = "111111";
+	    String pathToWalletFile = "/home/fanjianbin/eth/chain/keystore/UTC--2017-03-24T01-53-19.639609974Z--882f967839a9984ca20569d703900aa180b9b548";//0xee6b972e169fa2e16dd6208ecc92952e58f1af35
+	    //String pathToWalletFile = "/home/fanjianbin/eth/chain/keystore/UTC--2017-03-29T05-33-32.102700340Z--eb97bed0631515013f58b066b8e8561694e06a3b";  
+	    File file = new File(pathToWalletFile);
+		credentials = WalletUtils.loadCredentials(password,file);
+        Conference contract = Conference.load("0xee6b972e169fa2e16dd6208ecc92952e58f1af35", web3j, credentials, new BigInteger("60000"), new BigInteger("900000"));
+		Future<TransactionReceipt> refundTicketResult = contract.refundTicket(new Address("0x43523d18f10cfdd2d7d94d5315d1808d4233df5b"), new Uint256(777));
+        System.out.println(refundTicketResult.get());
+        System.out.println(contract.numRegistrants().get().getValue());
+	}
+	
+	private static void deploy() {
+		Credentials credentials = null;
+	    String password = "111111";
+	    String pathToWalletFile = "/home/fanjianbin/eth/chain/keystore/UTC--2017-03-24T01-53-19.639609974Z--882f967839a9984ca20569d703900aa180b9b548";//0xee6b972e169fa2e16dd6208ecc92952e58f1af35
+	    //String pathToWalletFile = "/home/fanjianbin/eth/chain/keystore/UTC--2017-03-29T05-33-32.102700340Z--eb97bed0631515013f58b066b8e8561694e06a3b";  
+	    File file = new File(pathToWalletFile);
+
+	    try {
+	        credentials = WalletUtils.loadCredentials(password,file);
+	        Conference contract = Conference.deploy(web3j, credentials, new BigInteger("60000"), new BigInteger("900000"), BigInteger.ZERO).get();
+	        System.out.println(contract.getContractAddress());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    }  
 }
