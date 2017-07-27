@@ -153,7 +153,7 @@
 			<version>1.4.6</version>
 		</dependency>
 		<dependency> <groupId>org.web3j</groupId> <artifactId>core</artifactId> 
-			<version>2.2.2</version> </dependency>
+			<version>2.3.0</version> </dependency>
 		<dependency>
 			<groupId>io.reactivex.rxjava2</groupId>
 			<artifactId>rxjava</artifactId>
