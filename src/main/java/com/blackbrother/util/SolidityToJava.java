@@ -40,7 +40,7 @@ public class SolidityToJava {
 
     public static void main(String[] args) throws Exception {
         //solc BlindAuction.sol --bin --abi --optimize -o ../../solccontract/
-    	String[] strs = {"/home/fanjianbin/app/solccontract/BlindAuction.bin","/home/fanjianbin/app/solccontract/BlindAuction.abi","-o","/home/fanjianbin/app/javacontract","-p","com.blackbrother.model"};
+    	String[] strs = {"E:/solccontract/BlindAuction.bin","E:/solccontract/BlindAuction.abi","-o","E:/javacontract","-p","com.blackbrother.model"};
     	args = strs;
         if (args.length != 6) {
             exitError(USAGE);

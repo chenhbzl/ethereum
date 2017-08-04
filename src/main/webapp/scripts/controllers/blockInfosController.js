@@ -65,6 +65,8 @@ angular.module('ethExplorer')
 
 
             function getBlockInfos(blockId){
+            	console.log("aaaaaaaa="+web3.toHex("25"));
+            	console.log("aaaaaaaa="+web3.sha3("0x19"+"0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb658"));
                 var deferred = $q.defer();
                 //获取区块信息
                 $http.post('http://127.0.0.1:8080/block/getBlock?blockId='+blockId).success(function(data){
@@ -94,7 +96,7 @@ angular.module('ethExplorer')
                             from: receipt.from,
                             to: receipt.to,
                             gas: receipt.gasUsed,
-                            input: web3.toUtf8(result.input),//需要web3.fromUtf8('投票', 32)存入区块链
+                            input: result.input,//需要web3.fromUtf8('投票', 32)存入区块链
                             value: parseInt(result.value),
                             contractAddress: receipt.contractAddress
                         };

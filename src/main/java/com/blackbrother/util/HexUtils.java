@@ -41,7 +41,7 @@ public class HexUtils {
 	 * @throws UnsupportedEncodingException 
 	 */
 	public static void main(String[] args) throws UnsupportedEncodingException {
-		System.out.println(encode("上海1a"));
-		System.out.println(decode("0xe4b88ae6b5b73161"));
+		System.out.println(encode("25"));
+		System.out.println(decode("0x3235"));
 	}
 }
