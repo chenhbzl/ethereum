@@ -41,6 +41,10 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
                 templateUrl: 'views/ballot.html',
                 controller: 'ballotCtrl'
             }).
+            when('/blindauction', {
+                templateUrl: 'views/blindauction.html',
+                controller: 'blindauctionCtrl'
+            }).
             otherwise({
                 redirectTo: '/'
             });

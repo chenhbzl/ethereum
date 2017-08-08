@@ -5,10 +5,18 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
@@ -25,6 +33,7 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.parity.Parity;
 
@@ -32,7 +41,7 @@ import com.blackbrother.model.AuctionUtil;
 import com.blackbrother.model.BlindAuction;
 import com.blackbrother.util.ParityClient;
 import com.blackbrother.util.Web3JClient;
-
+@RestController
 public class BlindAuctionController {
 	private static Web3j web3j = Web3JClient.getClient();
 	private static Parity parity = ParityClient.getParity();
@@ -55,86 +64,116 @@ public class BlindAuctionController {
 		}
 		return credentials;
 	}
-	public static String deploy() {
+	
+	@RequestMapping(value = "blind/deploy", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deploy(HttpServletRequest request) {
 		String address = "";
 		try {
-			BlindAuction contract = BlindAuction.deploy(web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"), BigInteger.ZERO,new Uint256(300), new Uint256(300), new Address("0x56e8e462b874cc88f4a0b3e458b1bb4ba8429738")).get();
-			//	BlindAuction2 contract = BlindAuction2.deploy(web3j, getCredentials(), new BigInteger("60000"), new BigInteger("900000"),BigInteger.ZERO).get();
+			BigInteger biddingEnd = new BigInteger(request.getParameter("biddingEnd"));
+			BigInteger revealEnd = new BigInteger(request.getParameter("revealEnd"));
+			String beneficiary = request.getParameter("beneficiary");
+			BlindAuction contract = BlindAuction.deploy(web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"), BigInteger.ZERO,new Uint256(biddingEnd.multiply(new BigInteger("60"))), new Uint256(revealEnd.multiply(new BigInteger("60"))), new Address(beneficiary)).get();
 			address = contract.getContractAddress();
 			System.out.println(contract.getContractAddress());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return address;
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", address);
+		return map;
 	}
 
 
     //出价，同一个地址可以多次出价
-	public static String bids(String values,String to/*HttpServletRequest request*/) throws InterruptedException, ExecutionException {
-		String address = "0xeb97bed0631515013f58b066b8e8561694e06a3b";//request.getParameter("address");
-		BigInteger _values = new BigInteger(values);//new BigInteger(request.getParameter("_values"));
-		boolean _fake = new Boolean("false");//new Boolean(request.getParameter("_fake"));
-		String unencrypted = "test";//request.getParameter("unencrypted");
-//		BlindAuction contract = BlindAuction.load(address, web3j, credentials, new BigInteger("60000"), new BigInteger("900000"));
-		EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount("0xeb97bed0631515013f58b066b8e8561694e06a3b", DefaultBlockParameterName.LATEST).sendAsync().get();
+	@RequestMapping(value = "blind/bids", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> bids(HttpServletRequest request) throws InterruptedException, ExecutionException {
+		String bidderAddress = request.getParameter("bidderAddress");//出价者  "0xeb97bed0631515013f58b066b8e8561694e06a3b";
+		BigInteger bid = new BigInteger(request.getParameter("bid"));//new BigInteger(values);
+		boolean fake = new Boolean(request.getParameter("fake"));//new Boolean("false");
+		String unencrypted = request.getParameter("unencrypted");//"test";
+        String to = request.getParameter("contractAddress");
+		EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(bidderAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
 	    BigInteger nonce = ethGetTransactionCount.getTransactionCount();
 	    
 	    AuctionUtil contract = AuctionUtil.load("0x819c460ac6c7fd8e05ad4231156431b02ed2cb3f", web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
-		
-	    Function function = new Function("bids", Arrays.<Type>asList(contract.getBytes32(new Uint256(_values), new Bool(_fake), contract.stringToBytes32(new Utf8String(unencrypted)).get()).get()), Collections.<TypeReference<?>>emptyList());
+	    Function function = new Function("bids", Arrays.<Type>asList(contract.getBytes32(new Uint256(bid), new Bool(fake), contract.stringToBytes32(new Utf8String(unencrypted)).get()).get()), Collections.<TypeReference<?>>emptyList());
 		String encodedFunction = FunctionEncoder.encode(function);
-		Transaction transaction = Transaction.createFunctionCallTransaction(address, nonce,new BigInteger("60000"), new BigInteger("900000"), to, _values, encodedFunction);
-		org.web3j.protocol.core.methods.response.EthSendTransaction transactionResponse = parity.personalSignAndSendTransaction(transaction, "111111").sendAsync().get();
-		String hash = transactionResponse.getResult();
-		System.out.println(transactionResponse.getResult());
-		return hash;
+		Transaction transaction = Transaction.createFunctionCallTransaction(bidderAddress, nonce,new BigInteger("60000"), new BigInteger("900000"), to, bid, encodedFunction);
+		EthSendTransaction transactionResponse = parity.personalSignAndSendTransaction(transaction, "111111").sendAsync().get();
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", transactionResponse.getResult());
+		return map;
 	}
 	
     //拍卖结束后，除了最高价值外的所有正常出价会被退款
-	public static String reveal(String to/*HttpServletRequest request*/) throws Exception{
-//		String to = "0xe113ca364e449dc5d0d5c21a5ac57dbcf4c1fe39";//request.getParameter("address");
-		String[] values = {"50","100"};//request.getParameter("values").split(",");
+	@RequestMapping(value = "blind/reveal", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> reveal(HttpServletRequest request) throws Exception{
+		String to = request.getParameter("contractAddress");//		String to = "0xe113ca364e449dc5d0d5c21a5ac57dbcf4c1fe39";//request.getParameter("address");
+		String[] bids = request.getParameter("bids").split(",");//{"50","100"};
 		List<Uint256> valuesList = new ArrayList<>();
-		for (String value : values) {
+		for (String value : bids) {
 			valuesList.add(new Uint256(new BigInteger(value)));
 		}
-		String[] fakes = {"false","false"};//request.getParameter("_fake").split(",");
+		String[] fakes = request.getParameter("fakes").split(",");//{"false","false"};
 		List<Bool> fakeList = new ArrayList<>();
 		for (String fake : fakes) {
 			fakeList.add(new Bool(new Boolean(fake)));
 		}
-		//String unencrypted = "test-test";//request.getParameter("unencrypted");//"多个出价记录的描述-隔开"
-
+		
 		AuctionUtil auctionContract = AuctionUtil.load("0x819c460ac6c7fd8e05ad4231156431b02ed2cb3f", web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
-		Bytes32 _secret = auctionContract.stringToBytes32(new Utf8String("test")).get();
+		String[] unencrypteds = request.getParameter("unencrypteds").split(",");
 		List<Bytes32> secretList = new ArrayList<>(); 
-		secretList.add(_secret);
-		secretList.add(_secret);
+		for (String unencrypted : unencrypteds) {
+			Bytes32 _secret = auctionContract.stringToBytes32(new Utf8String(unencrypted)).get();
+			secretList.add(_secret);
+		}
 		
 		BlindAuction contract = BlindAuction.load(to, web3j, getCredentials(2), new BigInteger("60000"), new BigInteger("900000"));
 		Future<TransactionReceipt> refundTicketResult = contract.reveal(new DynamicArray<Uint256>(valuesList), new DynamicArray<Bool>(fakeList), new DynamicArray<Bytes32>(secretList));
-		System.out.println(refundTicketResult.get());
-		return null;
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", refundTicketResult.get().getBlockHash());
+		return map;
 	}
 	
 	//退款
-	public static String withdraw(String address/*HttpServletRequest request*/) throws Exception{
-		//String address = request.getParameter("address");
+	@RequestMapping(value = "blind/withdraw", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> withdraw(HttpServletRequest request) throws Exception{
+		String address = request.getParameter("contractAddress");
 		BlindAuction contract = BlindAuction.load(address, web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
 		TransactionReceipt  result = contract.withdraw(new BigInteger("0")).get();
 		String blockNumber = result.getBlockNumber().toString();
 		System.out.println(blockNumber);
-		return blockNumber;
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", blockNumber);
+		return map;
 	}
 
 	//
-	public static String auctionEnd(String address/*HttpServletRequest request*/) throws Exception{
-		//String address = request.getParameter("address");
+	@RequestMapping(value = "blind/auctionEnd", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> auctionEnd(HttpServletRequest request) throws Exception{
+		String address = request.getParameter("contractAddress");
 		BlindAuction contract = BlindAuction.load(address, web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
 		TransactionReceipt  result = contract.auctionEnd().get();
 		String blockNumber = result.getBlockNumber().toString();
 		System.out.println(blockNumber);
-		return blockNumber;
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", blockNumber);
+		return map;
+	}
+	
+	@RequestMapping(value = "blind/getBalance", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object>  getBalance(HttpServletRequest request) throws Exception{
+		String address = request.getParameter("contractAddress");
+		BlindAuction contract = BlindAuction.load(address, web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", contract.getBalance().get().getValue().toString());
+		return map;
 	}
 	 
 	public static void main(String[] args) throws Exception{
@@ -148,12 +187,10 @@ public class BlindAuctionController {
 //		String a5 = auctionEnd("0x59c23a357038a20ce180ffd5056cf754206a1bd7");
 //		System.out.println(a5);
 		
-		BlindAuction contract = BlindAuction.load("0x59c23a357038a20ce180ffd5056cf754206a1bd7", web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
+		BlindAuction contract = BlindAuction.load("0x250742672579a439d45b70d6e435c7452b2631f1", web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
 		System.out.println(new Address(contract.highestBidder().get().getValue()));
 		System.out.println(contract.highestBid().get().getValue());
 		System.out.println(contract.ended().get().getValue());
-		System.out.println(new Address(contract.a().get().getValue()));
-		System.out.println(contract.b().get().getValue());
 //		
 //		AuctionUtil auctionContract = AuctionUtil.load("0x819c460ac6c7fd8e05ad4231156431b02ed2cb3f", web3j, getCredentials(), new BigInteger("60000"), new BigInteger("900000"));
 //		System.out.println(new String(auctionContract.getBytes32(new Uint256(new BigInteger("25")), new Bool(false), auctionContract.stringToBytes32(new Utf8String("test")).get()).get().getValue()));

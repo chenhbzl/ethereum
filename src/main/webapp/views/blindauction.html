@@ -1,0 +1,75 @@
+<title>非公开拍卖智能合约案例</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .section {
+      margin: 20px;
+    }
+    button {
+      padding: 5px 16px;
+      border-radius: 4px;
+    }
+    button#changeQuota { background-color: yellow; }
+    button#buyTicket { background-color: #98fb98; }
+    button#refundTicket { background-color: pink; }
+    button#createWallet { background-color: #add8e6; }
+    #seed {color: green;}
+  </style>
+</head>
+<div>
+  <h1>非公开拍卖智能合约案例</h1>
+  <div class="section">
+      <h5>例子：5,5,0x2e0220fbe5c03f5ce3346364f61c30a7f873b2db</h5>
+               拍卖时间(分钟): <input type="text" id="biddingEnd" />
+               公示时间(分钟): <input type="text" id="revealEnd" />
+               受益人: <input type="text" id="beneficiary" />
+      <button ng-click="deploy()">部署合约</button>
+      <span id="deployResult"></span><span id="contractAddress">0xe7fe194df91cd88c7deb51a8ebdfd1ba23e4890e</span>
+  </div>
+  <hr/>
+  <div class="section">
+      <button ng-click="getBalance()">获取余额</button>
+               受益人拍卖前余额：<span id="balanceResult">
+  </div>
+  <hr/>
+  <div class="section">
+    <h2>拍卖出价</h2>
+    <h5>两组例子：0xeb97bed0631515013f58b066b8e8561694e06a3b,50,false,test;0xeb97bed0631515013f58b066b8e8561694e06a3b,100,false,test</h5>
+           出价人: <input type="text" id="bidderAddress" style="width:100px"/> 
+           出价: <input type="text" id="bid" style="width:100px"/>
+           是否篡改: <input type="text" id="fake" style="width:100px"/>
+           出价信息<input type="text" id="unencrypted" style="width:100px"/>
+    <button ng-click="bids()">出价</button>
+    <span id="bidsResult"></span>
+  </div>
+
+  <hr/>
+  <div class="section">
+    <h2>组织最高出价外的所有出价记录(准备退款)</h2>
+    <h5>以上出价汇总例子：50,100;false,false;test,test</h5>
+           出价: <input type="text" id="bids"/>
+           是否篡改: <input type="text" id="fakes" />
+           出价信息<input type="text" id="unencrypteds" />
+    <button ng-click="reveal()">提交</button>
+    <span id="revealResult"></span>
+  </div>
+  <hr/>
+  <div class="section">
+    <h2>退款</h2>
+    <h5>这个地方根据每个人的出价执行一次</h5>
+    <button ng-click="withdraw()">退款</button>
+    <span id="withdrawResult"></span>
+  </div>
+  <hr/>
+  <div class="section">
+    <h2>结束拍卖，发送最高出价给商品所有者</h2>
+    <button ng-click="auctionEnd()">提交</button>
+    <span id="auctionResult"></span>
+  </div>
+  <hr/>
+  <div class="section">
+      <button ng-click="getBalance_()">获取余额</button>
+               受益人拍卖后余额：<span id="balanceResult_">
+  </div>
+</div>
