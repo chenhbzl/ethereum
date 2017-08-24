@@ -187,7 +187,7 @@ public class BlindAuctionController {
 //		String a5 = auctionEnd("0x59c23a357038a20ce180ffd5056cf754206a1bd7");
 //		System.out.println(a5);
 		
-		BlindAuction contract = BlindAuction.load("0x250742672579a439d45b70d6e435c7452b2631f1", web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
+		BlindAuction contract = BlindAuction.load("0xeb666eeffbc965bbaad6f21bda04b43f56906160", web3j, getCredentials(1), new BigInteger("60000"), new BigInteger("900000"));
 		System.out.println(new Address(contract.highestBidder().get().getValue()));
 		System.out.println(contract.highestBid().get().getValue());
 		System.out.println(contract.ended().get().getValue());
